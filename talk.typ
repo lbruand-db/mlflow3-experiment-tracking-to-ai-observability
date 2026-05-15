@@ -5,6 +5,7 @@
 // ==========================================================================
 
 #import "dbrx.typ": *
+#import "@preview/cetz:0.4.2": canvas, draw
 
 #show: dbrx-presentation.with(
   title: "From Experiment Tracking to AI Observability",
@@ -166,6 +167,7 @@
 ]
 
 // --- Slide 11: The Continuous Improvement Cycle ---
+// Drawn with cetz so the loop-back from Annotate -> Eval is visibly a cycle.
 #freeform-slide()[
   #place(top + left, dx: margin-x, dy: margin-top,
     block(width: 31.3cm,
@@ -175,10 +177,88 @@
     block(width: 31.3cm,
       text(size: 20pt, fill: dbrx-dark-teal)[Marc's Monday incident becomes Tuesday's golden-set entry.]))
 
-  #place(top + left, dx: margin-x, dy: 5cm,
-    block(width: 31.3cm, height: 12cm)[
+  #place(top + left, dx: 0cm, dy: 4.6cm,
+    block(width: slide-width, height: 13cm)[
       #set align(center + horizon)
-      #dbrx-mermaid("graph LR\nA[Dev] --> B[Trace dev]\nB --> C[Eval set]\nC --> D[LLM Judge]\nD --> E[Promote]\nE --> F[Prod trace]\nF --> G[Annotate]\nG --> C\nclass A dbrxGray\nclass B dbrxTeal\nclass C dbrxTeal\nclass D dbrxDarkTeal\nclass E dbrxNavy\nclass F dbrxRed\nclass G dbrxGreen")
+      #canvas(length: 1cm, {
+        import draw: *
+
+        let r = 5.2
+        let node-half-w = 1.9
+        let node-half-h = 0.55
+
+        // (label, angle deg from +x axis, fill, text-color)
+        let nodes = (
+          ("Develop",    90,  dbrx-light-gray, dbrx-charcoal),
+          ("Eval set",   30,  dbrx-teal,       white),
+          ("LLM Judge", -30,  dbrx-dark-teal,  white),
+          ("Deploy",    -90,  dbrx-dark-navy,  white),
+          ("Prod trace",-150, dbrx-red,        white),
+          ("Annotate",   150, dbrx-green,      white),
+        )
+
+        // Positions (x, y) for each node center
+        let pos = nodes.map(n => {
+          let theta = n.at(1) * calc.pi / 180.0
+          (r * calc.cos(theta), r * calc.sin(theta))
+        })
+
+        // Edge from node i center toward node j center, shortened so the
+        // arrowhead sits just outside the target rectangle.
+        let arrow(i, j, color, thickness) = {
+          let (x1, y1) = pos.at(i)
+          let (x2, y2) = pos.at(j)
+          let dx = x2 - x1
+          let dy = y2 - y1
+          let dist = calc.sqrt(dx * dx + dy * dy)
+          // shrink by ~node radius on each side
+          let shrink = 2.0
+          let f1 = shrink / dist
+          let f2 = (dist - shrink) / dist
+          let sx = x1 + dx * f1
+          let sy = y1 + dy * f1
+          let ex = x1 + dx * f2
+          let ey = y1 + dy * f2
+          line(
+            (sx, sy),
+            (ex, ey),
+            mark: (end: "stealth", scale: 1.4),
+            stroke: (paint: color, thickness: thickness),
+          )
+        }
+
+        // Draw arrows (clockwise: 0->1->2->3->4->5->0)
+        // Index 5 -> 0 is "Annotate -> Develop", but the SPEC feedback edge
+        // is "Annotate -> Eval set" (5 -> 1). Wire that explicitly in green.
+        arrow(0, 1, dbrx-charcoal, 1.5pt)  // Develop -> Eval set
+        arrow(1, 2, dbrx-charcoal, 1.5pt)  // Eval set -> LLM Judge
+        arrow(2, 3, dbrx-charcoal, 1.5pt)  // LLM Judge -> Deploy
+        arrow(3, 4, dbrx-charcoal, 1.5pt)  // Deploy -> Prod trace
+        arrow(4, 5, dbrx-charcoal, 1.5pt)  // Prod trace -> Annotate
+        arrow(5, 1, dbrx-green,    3pt)    // Annotate -> Eval set (feedback)
+
+        // Draw nodes on top of arrows
+        for (i, n) in nodes.enumerate() {
+          let (label, _, fill, txt) = n
+          let (x, y) = pos.at(i)
+          rect(
+            (x - node-half-w, y - node-half-h),
+            (x + node-half-w, y + node-half-h),
+            fill: fill,
+            stroke: fill,
+            radius: 0.18,
+          )
+          content((x, y), text(size: 12pt, fill: txt)[#label])
+        }
+
+        // "feedback" label on the green chord
+        let (fx1, fy1) = pos.at(5)
+        let (fx2, fy2) = pos.at(1)
+        content(
+          ((fx1 + fx2) / 2, (fy1 + fy2) / 2 + 0.45),
+          text(size: 11pt, fill: dbrx-green)[#emph[feedback]],
+        )
+      })
     ])
 ]
 
