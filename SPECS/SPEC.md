@@ -35,27 +35,45 @@ The deck mirrors the MLflow 3.0 launch framing: **one platform spanning GenAI, c
 
 When a slide describes a managed-only capability, say so explicitly and offer the OSS analogue (e.g., "in OSS you wire this into your own CI/CD").
 
+## Narrative Spine: Marc's Week
+
+The deck has a protagonist. **Marc** is a data scientist at the bank. He shipped a *prêt immobilier* eligibility assistant six months ago — it works, it's in production, real customers use it. Then he has a week.
+
+| Day | What happens to Marc | What Marc has today | What he needs |
+|---|---|---|---|
+| **Monday** | A customer (Mme Dubois) is told the wrong DTI threshold. Marc gets paged. | A timestamp and a transcript fragment. | The exact prompt that ran, the docs the retriever pulled, what the LLM actually returned. |
+| **Tuesday** | The LLM vendor silently pushed a model upgrade. Some answers got worse, some better. | Vibes. | A baseline to diff against and a version stamp on every prod call. |
+| **Wednesday** | His PM asks "is it getting better since launch?" | Anecdotes and screenshots. | A defensible number, computed the same way every week. |
+| **Thursday** | His Model Risk officer needs the validation pack before Friday's committee. | A Jupyter notebook and three screenshots. | A reproducible bundle: model version + traces + eval runs + sign-off log. |
+
+**The talk is Marc's week, told twice.** First time (Act I): how it actually went. Second time (Acts II–III): the same week with MLflow 3 OSS — each pillar earns its slot by fixing one of Marc's days. The **Continuous Improvement Cycle** is Monday's incident becoming Tuesday's test case. The operating-model act is Marc + his MLOps peer + his MR officer, with RACI emerging naturally from the trio.
+
+**Marc is not a strawman.** He is competent, well-intentioned, and using the best practices of MLflow 2 + a notebook-first workflow. His pains are structural, not personal. Every slide must pass the test: *"would I, in Marc's shoes, have been any better off?"* If the room hears "Marc was naive," the frame is broken.
+
 ## Narrative Arc
 
-The audience already knows the feature list — we earn their attention by showing the *shift in mental model* and the *bank-specific operating model*, not the API.
+The audience already knows the feature list — we earn their attention by giving them a character to follow, and reframing the *shift in mental model* through his eyes.
 
-### Act I — The shift (5 min, ~4 slides)
-Why MLflow had to grow from experiment tracker to AI lifecycle plane. The failure modes of GenAI apps (silent quality regressions, hallucinations on a KYC summary, prompt drift after a vendor model upgrade, cost spikes) are invisible to a classic experiment tracker. MLflow 3 reframes the unit of work from "run" to **application + version + trace + judgment**, with **LoggedModel** as the new central abstraction.
+### Act I — Marc's week, as it happened (8 min, ~5 slides)
+Introduce Marc. Walk Monday through Thursday. Each day is one canonical GenAI-in-prod failure mode — silent incident, vendor drift, no quality signal, no audit evidence — recognizable to every practitioner in the room. Close the act with the diagnosis: classic MLflow + a notebook can't fix any of these, because the unit of work is wrong. MLflow 3 reframes it from "run" to **application + version + trace + judgment**, with **LoggedModel** as the new central abstraction.
 
-### Act II — The three pillars of MLflow 3 OSS (15 min, ~7 slides)
-Each pillar is presented with the **bank-relevant concern it answers**, grounded in OSS APIs.
+### Act II — Marc's four answers (15 min, ~7 slides)
+Each pillar of MLflow 3 OSS rescues one of Marc's days, and earns its slot accordingly.
 
-1. **Experimentation** — Prompt Registry (Git-style versioning, DSPy optimizer), LoggedModel as the unified artifact across GenAI/ML/DL, evaluation with LLM Judges + custom scorers via `mlflow.genai.evaluate`. Bank concern: reproducibility and defensible quality metrics. *(Note: the Review App for expert annotation is Databricks-only; in OSS you collect annotations through your own tooling or notebook workflows.)*
-2. **Observability** — Production-Grade Tracing on OpenTelemetry, packaged as the lightweight `mlflow-tracing` library; autolog across 20+ GenAI libraries (LangChain, LangGraph, OpenAI, LlamaIndex…); spans for retriever, LLM, tool calls; inputs/outputs/latency/cost on every span; **every trace bound to a LoggedModel version + Prompt version**. Bank concern: full audit trail per inference, root-cause in minutes not days, post-market monitoring.
-3. **Governance (the OSS read)** — What OSS gives you is *evidence*, not a workflow engine: versioned artifacts (LoggedModel, Prompt Registry), evaluation runs as first-class records, lineage across runs / prompts / datasets / traces. You wire those artifacts into your existing change-management. *(One line: managed Databricks adds Deployment Jobs, Quality Gates, and Unity Catalog as the governance plane — useful, but not required to make MLflow 3 OSS regulator-defensible.)*
+1. **Monday — Observability.** Production-Grade Tracing on OpenTelemetry, packaged as the lightweight `mlflow-tracing` library; autolog across 20+ GenAI libraries (LangChain, LangGraph, OpenAI, LlamaIndex…); spans for retriever, LLM, tool calls; inputs/outputs/latency/cost on every span; **every trace bound to a LoggedModel version + Prompt version**. Marc reproduces Monday in five clicks.
+2. **Tuesday — Experimentation (versioning).** Prompt Registry (Git-style versioning, DSPy optimizer), LoggedModel as the unified artifact across GenAI/ML/DL. Marc gets a version stamp on every prod call and a baseline to diff against; the next vendor upgrade is a Tuesday-morning notification, not a Monday-afternoon page.
+3. **Wednesday — Experimentation (evaluation).** `mlflow.genai.evaluate` with LLM Judges + custom scorers (e.g. "no personalized financial advice"). Marc's PM gets a defensible number, computed the same way every week. *(Review App for expert annotation is Databricks-only; in OSS, Marc collects annotations via notebook workflows.)*
+4. **Thursday — Governance, the OSS read.** What OSS gives Marc is *evidence*, not a workflow engine: versioned artifacts (LoggedModel, Prompt Registry), evaluation runs as first-class records, lineage across runs / prompts / datasets / traces. The validation pack assembles itself from primitives Marc already has. *(One line: managed Databricks adds Deployment Jobs, Quality Gates, and Unity Catalog — useful, not required to make MLflow 3 OSS regulator-defensible.)*
 
-The act closes on the **Continuous Improvement Cycle** diagram: dev → trace → eval dataset → judge → deploy → prod trace → annotate/review → back to eval dataset.
+Four days, three pillars — Tuesday and Wednesday both sit under Experimentation (versioning vs evaluation). The act closes on the **Continuous Improvement Cycle** diagram: Marc's Monday incident becomes Tuesday's golden-set entry; production data is now Marc's roadmap.
 
-### Act III — Operating model for a bank (15 min, ~7 slides)
+### Act III — Marc's team and his bank (12 min, ~6 slides)
+Marc isn't alone. He has an **MLOps peer** who owns the deployment pipeline and a **Model Risk officer** who wants evidence. The operating model is the trio.
+
 - Mapping MLflow 3 **OSS** artifacts onto **EU AI Act** obligations (Art. 12 logging via tracing, Art. 14 human oversight via expert annotation workflows, Art. 17 QMS via versioned eval runs, Art. 72 post-market monitoring via sampled production tracing + re-evaluation) and **DORA** ICT-incident reporting.
-- Model Risk Management: the validation pack assembled from OSS primitives = LoggedModel version + traces + eval run + your own sign-off log. Analogue to SR 11-7 / ACPR guidance.
-- RACI: who owns prompts, who signs off evals, who is paged on a production scorer breach.
-- Data residency and PII: where you host the tracking server, redaction strategies at trace ingest, what stays *out* of MLflow.
+- Model Risk Management: Marc's validation pack as the answer to SR 11-7 / ACPR-style guidance — LoggedModel version + traces + eval run + sign-off log, all reproducible.
+- RACI: Marc / MLOps peer / MR officer — who owns prompts, who signs off evals, who is paged on a production scorer breach.
+- Data residency and PII: where Marc hosts the tracking server, redaction at trace ingest, what stays *out* of MLflow.
 - One explicit slide: **what Databricks-managed adds on top** — Review App, Deployment Jobs, Quality Gates, UC governance, online monitoring dashboards. Honest, brief, no pitch.
 
 ## Slide-by-slide Outline
@@ -63,29 +81,30 @@ The act closes on the **Continuous Improvement Cycle** diagram: dev → trace �
 | # | Slide function | Title | Key content |
 |---|---|---|---|
 | 1 | `title-slide` | From Experiment Tracking to AI Observability | Subtitle ("MLflow 3 OSS"), speaker, date, bank logo placeholder |
-| 2 | `content-slide` | Why this talk, given you already know MLflow 3 | Promise: an operating model and a bank-grade governance map for **OSS MLflow 3** — not a feature recap, not a managed-platform pitch |
-| 3 | `quote-slide` (red) | "A GenAI app fails silently. A classic model fails loudly." | Sets up the observability gap |
-| 4 | `two-column-slide` | Classic ML vs GenAI failure modes | Left: accuracy drop, data drift, training-serving skew. Right: hallucination on KYC docs, prompt regression after vendor model upgrade, tool misuse, cost spike, silent quality drift |
-| 5 | `content-slide` | The unit of work has changed | run → **application + version + trace + judgment**; introduce LoggedModel as the new central abstraction; trace ↔ version binding |
-| 6 | `section-slide-dark` (variant 1) | Act II — Three pillars, one platform | "Experimentation · Observability · Governance" |
+| 2 | `content-slide` | Meet Marc | Marc, data scientist at the bank; shipped a *prêt immobilier* eligibility assistant six months ago; works in his notebook, real customers use it. This talk is his week |
+| 3 | `quote-slide` (red) | "A GenAI app fails silently. A classic model fails loudly." | Sets up Marc's Monday |
+| 4 | `two-column-slide` | Marc's week | Mon: Mme Dubois incident · Tue: vendor model upgrade · Wed: PM wants a number · Thu: MR validation pack due. Left col: the day. Right col: what Marc has (very little) |
+| 5 | `content-slide` | Why this keeps happening to Marc | The unit of work is wrong: classic MLflow tracks "runs"; Marc needs **application + version + trace + judgment**. Enter LoggedModel as the new central abstraction |
+| 6 | `section-slide-dark` (variant 1) | Act II — Marc's four answers | "Experimentation · Observability · Governance" |
 | 7 | `card-slide` (3 cards) | MLflow 3 at a glance | Experimentation / Observability / Governance — one icon each (`dbrx-icon-ai`, `dbrx-icon-speed`, `dbrx-icon-data_warehouse`) |
-| 8 | `content-slide` | Pillar 1 — Experimentation, now GenAI-native | Prompt Registry with Git-style diffs + DSPy optimizer; LoggedModel as the unified artifact; `mlflow.genai.evaluate` with LLM Judges + custom scorers. One line: Review App for expert annotation is managed-only. Bank concern: reproducibility + defensible quality metrics |
-| 9 | `content-slide` | Pillar 2 — Production-Grade Tracing | OpenTelemetry under the hood; `mlflow-tracing` lightweight package; autolog for 20+ libraries; span tree with retriever / LLM / tool spans; cost & latency attribution; trace → exact prompt + code + dataset. Bank concern: per-inference audit trail, fast RCA |
-| 10 | `content-slide` | Pillar 3 — Governance via versioned artifacts | What OSS gives you: every trace bound to a LoggedModel version + Prompt version; eval runs as first-class records; lineage you can hand to an auditor. Wire into *your* change management. One line: managed Databricks adds Deployment Jobs / Quality Gates / UC plane |
-| 11 | `dbrx-mermaid` in `freeform-slide` | The Continuous Improvement Cycle | dev → trace → eval dataset → judge → deploy → prod trace → annotate → back to eval dataset. Classes: `dbrxGray` (dev), `dbrxTeal` (eval), `dbrxRed` (prod), `dbrxGreen` (feedback edge) |
-| 12 | `content-slide` | What this unlocks (OSS, today) | Trace-driven debugging of LLM chains; automatic eval-dataset creation from production traces; expert-aligned judges via human-labeled examples; cost & latency dashboards from trace data |
-| 13 | `section-slide-dark` (variant 2) | Act III — Operating model for a bank |  |
-| 14 | `two-column-slide` | EU AI Act × MLflow 3 OSS | Left: Art. 12 logging · Art. 14 human oversight · Art. 17 QMS · Art. 72 post-market monitoring. Right: tracing · expert-annotation workflows · versioned eval runs · sampled prod tracing + re-eval |
-| 15 | `content-slide` | DORA & model risk management | ICT incident reporting from production traces; ACPR-style validation pack assembled from OSS primitives = LoggedModel version + traces + eval run + your own sign-off log |
-| 16 | `board-slide` (3 columns) | RACI on a GenAI app | Data Scientist / MLOps / Model Risk Officer — cards: prompt versioning, eval suite ownership, scorer thresholds, change-management sign-off, incident triage |
-| 17 | `two-column-slide` | What managed Databricks adds on top | Left (OSS, what you already have): tracking server, tracing, Prompt Registry, LoggedModel, LLM Judges, evaluate. Right (managed adds): Review App, Deployment Jobs, Quality Gates, UC governance, online monitoring dashboards. **One slide only** — neutral, factual, no pitch |
+| 8 | `content-slide` | Marc's Monday — Production-Grade Tracing | OpenTelemetry; `mlflow-tracing` lightweight package; autolog for 20+ libraries (LangChain, LangGraph, OpenAI, LlamaIndex…); span tree (retriever / LLM / tool); cost & latency on every span; trace ↔ LoggedModel version ↔ Prompt version. Marc reproduces Monday in five clicks |
+| 9 | `content-slide` | Marc's Tuesday — versioned artifacts | Prompt Registry with Git-style diffs + DSPy optimizer; LoggedModel as unified artifact across GenAI/ML/DL; version stamp on every prod call catches vendor drift before users do |
+| 10 | `content-slide` | Marc's Wednesday — defensible quality | `mlflow.genai.evaluate` with LLM Judges + custom scorers (e.g. "no personalized financial advice"); a number, computed the same way every week. One line: Review App is managed-only — in OSS, annotations through notebook workflows |
+| 11 | `dbrx-mermaid` in `freeform-slide` | The Continuous Improvement Cycle | Marc's Monday incident → Tuesday's golden-set entry. dev → trace → eval dataset → judge → deploy → prod trace → annotate → back to eval dataset. Classes: `dbrxGray` (dev), `dbrxTeal` (eval), `dbrxRed` (prod), `dbrxGreen` (feedback edge) |
+| 12 | `content-slide` | Marc's Thursday — the validation pack | What OSS gives Marc: LoggedModel version + traces + eval runs + lineage assemble into the MR pack; reproducible, dateable, queryable. One line: managed Databricks adds Deployment Jobs / Quality Gates / UC plane |
+| 13 | `section-slide-dark` (variant 2) | Act III — Marc's team |  |
+| 14 | `two-column-slide` | EU AI Act × Marc's stack | Left: Art. 12 logging · Art. 14 human oversight · Art. 17 QMS · Art. 72 post-market monitoring. Right: tracing · expert-annotation workflows · versioned eval runs · sampled prod tracing + re-eval |
+| 15 | `content-slide` | DORA & model risk for Marc | ICT incident reporting from production traces; ACPR-style validation pack assembled from Marc's MLflow 3 OSS primitives = LoggedModel version + traces + eval run + sign-off log |
+| 16 | `board-slide` (3 columns) | RACI: Marc, his MLOps peer, his MR officer | Three named roles: Data Scientist (Marc) / MLOps / Model Risk Officer — cards: prompt versioning, eval suite ownership, scorer thresholds, change-management sign-off, incident triage |
+| 17 | `two-column-slide` | What Databricks-managed would add for Marc | Left (OSS, what Marc already has): tracking server, tracing, Prompt Registry, LoggedModel, LLM Judges, evaluate. Right (managed adds): Review App, Deployment Jobs, Quality Gates, UC governance, online monitoring dashboards. **One slide only** — neutral, factual, no pitch |
 | 18 | `content-slide` | Data residency & PII | Self-hosting the tracking server, EU region, PII redaction at trace ingest, what stays *out* of MLflow (e.g., raw client identifiers). Applies equally to OSS and managed |
-| 19 | `takeaway-slide` (3 rows) | Take home | 1. Tracing is the new logging — instrument now. 2. Promote scorers, not just models. 3. Prompts are code — register, diff, gate them |
-| 20 | `content-slide` | Monday-morning plan | 30/60/90-day pilot on **OSS**: instrument one app with `mlflow-tracing` (30d) → build eval set + judges from prod traces (60d) → wire Prompt Registry aliases into the bank's existing change-management (90d) |
+| 19 | `takeaway-slide` (3 rows) | What Marc has now that he didn't last week | 1. Tracing is the new logging — instrument now. 2. Promote scorers, not just models. 3. Prompts are code — register, diff, gate them |
+| 20 | `content-slide` | Your Marc starts Monday | 30/60/90-day plan on **OSS**: instrument one app with `mlflow-tracing` (30d) → build eval set + judges from prod traces (60d) → wire Prompt Registry aliases into change-management (90d) |
 | 21 | `content-slide` + `dbrx-qr-code` | Resources & Q&A | MLflow 3.0 launch blog, OSS docs, GitHub repo, contact |
 
 ## Tone & Visual Guidance
 
+- **Marc is the protagonist.** He is competent and well-intentioned (see Narrative Spine). Every slide must pass the test *"would I, in Marc's shoes, have been any better off?"* — if it reads as "Marc was naive," rewrite it. Marc's name should appear in slide titles wherever the slide concerns one of his days.
 - Audience is technical and skeptical — **no marketing slides**, no "AI is transforming everything" openers, **no Databricks pitch**.
 - Default framing for every feature: "this is in OSS MLflow 3." If a feature is managed-only, say so explicitly and offer the OSS analogue.
 - Use the bank's product vocabulary (prêt immobilier, KYC, service client) — never generic chatbots.
