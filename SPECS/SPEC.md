@@ -37,7 +37,7 @@ When a slide describes a managed-only capability, say so explicitly and offer th
 
 ## Narrative Spine: Marc's Week
 
-The deck has a protagonist. **Marc** is a data scientist at the bank. He shipped a *prêt immobilier* eligibility assistant six months ago — it works, it's in production, real customers use it. Then he has a week.
+The deck has a protagonist. **Marc** is a data scientist at the bank — portrait at `assets/marc.png` (stylized, ~3:4 aspect, transparent background). Reuse the same image on every Marc slide (small inset, top-left or as a column figure) so the audience locks onto the character. He shipped a *prêt immobilier* eligibility assistant six months ago — it works, it's in production, real customers use it. Then he has a week.
 
 | Day | What happens to Marc | What Marc has today | What he needs |
 |---|---|---|---|
@@ -81,7 +81,7 @@ Marc isn't alone. He has an **MLOps peer** who owns the deployment pipeline and 
 | # | Slide function | Title | Key content |
 |---|---|---|---|
 | 1 | `title-slide` | From Experiment Tracking to AI Observability | Subtitle ("MLflow 3 OSS"), speaker, date, bank logo placeholder |
-| 2 | `content-slide` | Meet Marc | Marc, data scientist at the bank; shipped a *prêt immobilier* eligibility assistant six months ago; works in his notebook, real customers use it. This talk is his week |
+| 2 | `content-slide` | Meet Marc | Large portrait (`assets/marc.png`) left; right: Marc, data scientist at the bank; shipped a *prêt immobilier* eligibility assistant six months ago; works in his notebook, real customers use it. This talk is his week. *(Use `two-column-slide` if needed for the portrait+bio layout.)* |
 | 3 | `quote-slide` (red) | "A GenAI app fails silently. A classic model fails loudly." | Sets up Marc's Monday |
 | 4 | `two-column-slide` | Marc's week | Mon: Mme Dubois incident · Tue: vendor model upgrade · Wed: PM wants a number · Thu: MR validation pack due. Left col: the day. Right col: what Marc has (very little) |
 | 5 | `content-slide` | Why this keeps happening to Marc | The unit of work is wrong: classic MLflow tracks "runs"; Marc needs **application + version + trace + judgment**. Enter LoggedModel as the new central abstraction |
@@ -104,7 +104,7 @@ Marc isn't alone. He has an **MLOps peer** who owns the deployment pipeline and 
 
 ## Tone & Visual Guidance
 
-- **Marc is the protagonist.** He is competent and well-intentioned (see Narrative Spine). Every slide must pass the test *"would I, in Marc's shoes, have been any better off?"* — if it reads as "Marc was naive," rewrite it. Marc's name should appear in slide titles wherever the slide concerns one of his days.
+- **Marc is the protagonist.** He is competent and well-intentioned (see Narrative Spine). Every slide must pass the test *"would I, in Marc's shoes, have been any better off?"* — if it reads as "Marc was naive," rewrite it. Marc's name should appear in slide titles wherever the slide concerns one of his days, and his portrait (`assets/marc.png`) should appear as a small recurring visual anchor on those slides.
 - Audience is technical and skeptical — **no marketing slides**, no "AI is transforming everything" openers, **no Databricks pitch**.
 - Default framing for every feature: "this is in OSS MLflow 3." If a feature is managed-only, say so explicitly and offer the OSS analogue.
 - Use the bank's product vocabulary (prêt immobilier, KYC, service client) — never generic chatbots.
