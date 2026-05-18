@@ -71,19 +71,27 @@
     description: subject,
     keywords: if commit-id != none { ("commit:" + commit-id,) } else { () },
   )
+  // Page setup in a single `set page` call. Foreground is used (instead
+  // of footer) because with margin: 0cm there is no footer area; the
+  // overlay places the page number on top of the slide background.
+  // Page 1 (title) is suppressed by the `if` inside the context.
   set page(
     width: slide-width,
     height: slide-height,
     margin: 0cm,
+    foreground: if page-numbers {
+      context {
+        if counter(page).get().first() > 1 {
+          place(
+            bottom + right,
+            dx: -0.7cm,
+            dy: -0.5cm,
+            text(size: 11pt, fill: luma(150))[#counter(page).display()],
+          )
+        }
+      }
+    } else { none },
   )
-  if page-numbers {
-    set page(footer: place(
-      bottom + right,
-      dx: -1.28cm,
-      dy: -0.6cm,
-      context text(size: 12pt, fill: luma(150))[#counter(page).display()],
-    ))
-  }
   set text(
     font: "Barlow",
     size: 18pt,
