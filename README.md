@@ -1,63 +1,47 @@
-# Databricks Corporate Presentation Template for Typst
+# From Experiment Tracking to AI Observability — MLflow 3 OSS
 
-A Typst template that faithfully reproduces the Databricks corporate slide deck, extracted from the official PowerPoint template. Uses the Barlow font, Databricks brand colors, logos, and halftone background patterns.
+A 45-minute tech talk for a French retail bank, told as Marc's week. Marc is a data scientist who shipped a *prêt immobilier* eligibility assistant six months ago; this deck walks through his Monday-through-Thursday and shows how each pillar of MLflow 3 OSS rescues one of his days.
 
-## Quick Start
+- **Deck**: [`talk.typ`](talk.typ) — 21 slides, compiles to `talk.pdf`
+- **Canonical spec**: [`SPECS/SPEC.md`](SPECS/SPEC.md) — narrative arc, slide-by-slide outline, tone & visual guidance. Update SPEC before editing the deck.
+- **Scoping questions** for the people preparing the session with the bank: [`SPECS/QUESTIONS.md`](SPECS/QUESTIONS.md)
 
-```typ
-#import "dbrx.typ": *
+Stance: tech talk, not sales play. Anchored in OSS `mlflow` / `mlflow-tracing`; Databricks-managed features appear only as a single neutral acknowledgement slide.
 
-#show: dbrx-presentation.with(
-  title: "My Presentation",
-  author: "Your Name",
-  subject: "Team Name",
-)
+Built on the Databricks Typst presentation template (`dbrx.typ`).
 
-#title-slide(
-  title: [My Presentation],
-  subtitle: [Team Name],
-  author: [Your Name],
-  date: [February 2026],
-)
-
-#content-slide(title: [Key Points])[
-  - First point
-  - Second point
-  - Third point
-]
-```
-
-Compile with:
+## Build
 
 ```bash
-./compile.sh my-presentation.typ
+./compile.sh talk.typ       # → talk.pdf
+./compile.sh example.typ    # → example.pdf (template showcase)
 ```
 
-This uses the bundled Barlow fonts and embeds the current git commit ID in the PDF metadata.
+Requires Typst ≥ 0.14 (`brew install typst`). `compile.sh` bundles the Barlow fonts in `fonts/` and embeds the current git commit ID in the PDF metadata.
 
 ## Project Structure
 
 ```
-typst-dbrx-template/
-  dbrx.typ              # Template library (import this)
-  example.typ           # Full example presentation
-  compile.sh            # Build script (fonts + git commit ID)
-  fonts/
-    Barlow-Regular.ttf   # Barlow font (5 weights)
-    Barlow-Medium.ttf
-    Barlow-SemiBold.ttf
-    Barlow-Bold.ttf
-    Barlow-Light.ttf
-  assets/
-    logo-light.png       # White logo (for dark/red backgrounds)
-    logo-dark.png        # Dark logo (for white backgrounds)
-    db-icon-red.svg      # Red Databricks icon (for QR codes)
-    bg-red.png           # Red halftone background
-    bg-dark.png          # Dark navy halftone background
-    bg-teal.png          # Teal halftone background
-    bg-headline-red.png  # Headline slide background (red)
-    bg-headline-dark-*.jpg  # Headline slide backgrounds (dark, 3 variants)
+.
+├── talk.typ                    # The presentation
+├── SPECS/
+│   ├── SPEC.md                 # Canonical content spec (source of truth)
+│   └── QUESTIONS.md            # Scoping questions for talk preparers
+├── dbrx.typ                    # Databricks Typst template (slide functions, colors)
+├── example.typ                 # Template showcase: every slide function
+├── compile.sh                  # Build script (fonts + git commit ID)
+├── CLAUDE.md                   # Compact template index for LLM agents
+├── fonts/                      # Barlow font family (5 weights)
+├── assets/                     # Logos, backgrounds, icons, marc.png
+└── scripts/
+    └── download-brand-icon.py  # Brandfolder icon fetcher (61 brand icons cached)
 ```
+
+---
+
+# Template Reference
+
+The rest of this README documents the `dbrx.typ` template. See `CLAUDE.md` for a compact index of the same surface.
 
 ## Slide Functions
 
