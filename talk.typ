@@ -434,3 +434,37 @@
     ],
   )
 ]
+
+// ==========================================================================
+// Backup slides
+// Diagrams reused from the internal MLflow 3.0 deck (slides 16, 17, 18 of
+// `[socgenAI] MLflow 3.0 (old)`). Kept beyond the Q&A slide for deeper-dive
+// questions about LoggedModel and the MLflow 2 -> 3 mental-model shift.
+// ==========================================================================
+
+// --- Backup divider ---
+#section-slide-dark(
+  title: [Backup],
+  variant: 3,
+)
+
+// --- Backup A: LoggedModel unifies GenAI / DL / classic ML ---
+#image-slide(
+  title: [LoggedModel — one abstraction across GenAI, deep learning, classic ML],
+  img: image("assets/backup-logged-models.png", height: 100%),
+  caption: [LoggedModel ties together a model's parameters, metrics, artifacts, eval feedback, and trace logs under a single `model_id`, queryable via one unified interface.],
+)
+
+// --- Backup B: BEFORE — model and traces lived in separate worlds ---
+#image-slide(
+  title: [Before MLflow 3 — model and traces lived in separate worlds],
+  img: image("assets/backup-before-mlflow3.png", height: 100%),
+  caption: [UC Registered Model holds the agent code; an Inference Table elsewhere holds traces and feedback; per-workspace MLflow Experiments hold the runs. Three sources of truth, weakly linked.],
+)
+
+// --- Backup C: AFTER — LoggedModel ties it all together ---
+#image-slide(
+  title: [After MLflow 3 — LoggedModel ties it all together],
+  img: image("assets/backup-after-mlflow3.png", height: 100%),
+  caption: [The Model Version *is* a LoggedModel. Runs across workspaces, traces in the Inference Table, and evaluations all share the same `model_id`. One source of truth for the bundle Marc hands to MR.],
+)
