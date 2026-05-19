@@ -1,6 +1,6 @@
 # SPEC — From Experiment Tracking to AI Observability (MLflow 3 OSS)
 
-> Source of truth for the presentation `talk.typ`. Aligned with the MLflow 3.0 launch narrative ("unified AI experimentation, observability, and governance"), but **scoped to the open-source project**. Databricks-managed features are mentioned only where the audience would otherwise hit a gap. Update this file before changing the deck.
+> Source of truth for the presentation `mlflow3-day-in-the-life-of-a-data-scientist.typ`. Aligned with the MLflow 3.0 launch narrative ("unified AI experimentation, observability, and governance"), but **scoped to the open-source project**. Databricks-managed features are mentioned only where the audience would otherwise hit a gap. Update this file before changing the deck.
 
 ## Meta
 
@@ -12,7 +12,7 @@
 - **Duration**: 45 min — ~40 min presentation + 5 min Q&A. No live demo.
 - **Format**: Typst deck on `dbrx.typ`. The template is Databricks-branded (speaker is a Databricks SA), but slide *content* stays vendor-neutral on the technology.
 - **Deliverables**:
-  1. `talk.typ` — the presentation
+  1. `mlflow3-day-in-the-life-of-a-data-scientist.typ` — the presentation
   2. This SPEC kept up to date
 
 ## Source Alignment

@@ -2,7 +2,7 @@
 
 A 45-minute tech talk for a French retail bank, told as Marc's week. Marc is a data scientist who shipped a *prêt immobilier* eligibility assistant six months ago; this deck walks through his Monday-through-Thursday and shows how each pillar of MLflow 3 OSS rescues one of his days.
 
-- **Deck**: [`talk.typ`](talk.typ) — 21 slides, compiles to `talk.pdf`
+- **Deck**: [`mlflow3-day-in-the-life-of-a-data-scientist.typ`](mlflow3-day-in-the-life-of-a-data-scientist.typ) — compiles to `mlflow3-day-in-the-life-of-a-data-scientist.pdf`
 - **Canonical spec**: [`SPECS/SPEC.md`](SPECS/SPEC.md) — narrative arc, slide-by-slide outline, tone & visual guidance. Update SPEC before editing the deck.
 - **Scoping questions** for the people preparing the session with the bank: [`SPECS/QUESTIONS.md`](SPECS/QUESTIONS.md)
 
@@ -13,8 +13,8 @@ Built on the Databricks Typst presentation template (`dbrx.typ`).
 ## Build
 
 ```bash
-./compile.sh talk.typ       # → talk.pdf
-./compile.sh example.typ    # → example.pdf (template showcase)
+./compile.sh mlflow3-day-in-the-life-of-a-data-scientist.typ   # → .pdf next to it
+./compile.sh example.typ                                       # → example.pdf (template showcase)
 ```
 
 Requires Typst ≥ 0.14 (`brew install typst`). `compile.sh` bundles the Barlow fonts in `fonts/` and embeds the current git commit ID in the PDF metadata.
@@ -23,7 +23,7 @@ Requires Typst ≥ 0.14 (`brew install typst`). `compile.sh` bundles the Barlow 
 
 ```
 .
-├── talk.typ                    # The presentation
+├── mlflow3-day-in-the-life-of-a-data-scientist.typ  # The presentation
 ├── SPECS/
 │   ├── SPEC.md                 # Canonical content spec (source of truth)
 │   └── QUESTIONS.md            # Scoping questions for talk preparers

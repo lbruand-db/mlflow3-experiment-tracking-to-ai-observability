@@ -141,7 +141,14 @@
   #text(fill: dbrx-dark-teal)[Marc reproduces Monday in five clicks.]
 ]
 
-// --- Slide 9: Marc's Tuesday — versioned artifacts ---
+// --- Slide 9: Marc's Monday — the trace UI in OSS ---
+#image-slide(
+  title: [Marc's Monday — what the trace UI looks like],
+  img: image("assets/backup-trace-debug.png", height: 100%),
+  caption: [Span tree on the left (LangGraph → agent → model call → tools), inputs/outputs on the right. OSS `mlflow ui`. The same screen powers Marc's root-cause from the production trace back to the exact prompt and retrieved docs. Source: mlflow.org/docs/latest/genai/tracing/],
+)
+
+// --- Slide 10: Marc's Tuesday — versioned artifacts ---
 #marc-day-slide(title: [Marc's Tuesday — versioned artifacts])[
   - *Prompt Registry* — Git-style versioning, diffs, aliases, DSPy optimizer
   - *LoggedModel* — unified artifact across GenAI / ML / DL
@@ -152,7 +159,7 @@
   #text(fill: dbrx-dark-teal)[The next vendor upgrade is a Tuesday-morning notification, not a Monday-afternoon page.]
 ]
 
-// --- Slide 10: Marc's Wednesday — defensible quality ---
+// --- Slide 11: Marc's Wednesday — defensible quality ---
 #marc-day-slide(title: [Marc's Wednesday — defensible quality])[
   - `mlflow.genai.evaluate` over a golden set
   - *LLM Judges* — research-backed, customizable
@@ -166,7 +173,14 @@
   #text(size: 18pt, fill: dbrx-teal)[Review App for expert annotation is managed-only; in OSS, annotations through notebook workflows.]
 ]
 
-// --- Slide 11: The Continuous Improvement Cycle ---
+// --- Slide 12: Marc's Wednesday — a custom scorer is this short ---
+#image-slide(
+  title: [Marc's Wednesday — a custom scorer is this short],
+  img: image("assets/backup-custom-scorer.png", height: 100%),
+  caption: [`@scorer` decorator + `mlflow.genai.judges.meets_guidelines` — the full body of a regulator-relevant scorer like "no personalized financial advice" fits in five lines. Pure OSS. Source: mlflow.org/docs/latest/genai/eval-monitor/],
+)
+
+// --- Slide 13: The Continuous Improvement Cycle ---
 // Drawn with cetz so the loop-back from Annotate -> Eval is visibly a cycle.
 #freeform-slide()[
   #place(top + left, dx: margin-x, dy: margin-top,
@@ -262,7 +276,14 @@
     ])
 ]
 
-// --- Slide 12: Marc's Thursday — the validation pack ---
+// --- Slide 14: The cycle, in pixels — eval dataset built from prod traces ---
+#image-slide(
+  title: [The cycle, in pixels — eval dataset built from prod traces],
+  img: image("assets/backup-trace-dataset.png", height: 100%),
+  caption: [Production traces, tagged and versioned, become rows in an eval dataset. This is the literal artifact of "Marc's Monday becomes Tuesday's golden-set entry." Source: mlflow.org/docs/latest/genai/tracing/],
+)
+
+// --- Slide 15: Marc's Thursday — the validation pack ---
 #marc-day-slide(title: [Marc's Thursday — the validation pack])[
   What OSS gives Marc — the bundle he hands to MR:
   - *LoggedModel version* + every checkpoint behind it
@@ -277,13 +298,13 @@
   #text(size: 18pt, fill: dbrx-teal)[Managed Databricks adds Deployment Jobs, Quality Gates, and Unity Catalog as the governance plane — useful, not required.]
 ]
 
-// --- Slide 13: Act III — section divider ---
+// --- Slide 16: Act III — section divider ---
 #section-slide-dark(
   title: [Act III — Marc's team],
   variant: 2,
 )
 
-// --- Slide 14: EU AI Act × Marc's stack ---
+// --- Slide 17: EU AI Act × Marc's stack ---
 #two-column-slide(
   title: [EU AI Act × Marc's stack],
   left-heading: [The obligation],
@@ -300,7 +321,7 @@
   - Sampled prod tracing + re-evaluation
 ]
 
-// --- Slide 15: DORA & model risk for Marc ---
+// --- Slide 18: DORA & model risk for Marc ---
 #content-slide(title: [DORA & model risk for Marc])[
   - *DORA* — ICT incident reports drawn directly from production traces
   - *SR 11-7 / ACPR* — Marc's validation pack:
@@ -313,7 +334,7 @@
   Assembled from primitives that exist in OSS today.
 ]
 
-// --- Slide 16: RACI ---
+// --- Slide 19: RACI ---
 #board-slide(
   title: [RACI: Marc, his MLOps peer, his MR officer],
   columns: (
@@ -338,7 +359,7 @@
   ),
 )
 
-// --- Slide 17: What Databricks-managed would add for Marc ---
+// --- Slide 20: What Databricks-managed would add for Marc ---
 #two-column-slide(
   title: [What Databricks-managed would add for Marc],
   left-heading: [What Marc has in OSS],
@@ -357,7 +378,7 @@
   - Online monitoring dashboards
 ]
 
-// --- Slide 18: Data residency & PII ---
+// --- Slide 21: Data residency & PII ---
 #content-slide(title: [Data residency & PII])[
   - Self-host the tracking server in the EU region
   - PII redaction at trace ingest (hooks on span attributes)
@@ -368,7 +389,7 @@
   Applies equally to OSS and managed.
 ]
 
-// --- Slide 19: Take home ---
+// --- Slide 22: Take home ---
 #takeaway-slide(
   title: [What Marc has now that he didn't last week],
   items: (
@@ -390,7 +411,7 @@
   ),
 )
 
-// --- Slide 20: Monday-morning plan ---
+// --- Slide 23: Monday-morning plan ---
 #content-slide(title: [Your Marc starts Monday])[
   #set text(size: 22pt)
   *30 days* — instrument one app with `mlflow-tracing`
@@ -410,7 +431,7 @@
   - Validation pack assembled at every promotion
 ]
 
-// --- Slide 21: Resources & Q&A ---
+// --- Slide 24: Resources & Q&A ---
 #content-slide(title: [Resources & Q&A])[
   #grid(
     columns: (1fr, auto),
@@ -468,3 +489,57 @@
   img: image("assets/backup-after-mlflow3.png", height: 100%),
   caption: [The Model Version *is* a LoggedModel. Runs across workspaces, traces in the Inference Table, and evaluations all share the same `model_id`. One source of truth for the bundle Marc hands to MR.],
 )
+
+// --- Final slide: Data + AI Summit 2026 CTA ---
+#freeform-slide()[
+  // Hero photo, left half
+  #place(top + left, dx: margin-x, dy: 2.6cm,
+    image("assets/dais-2026-venue.jpg", width: 15.5cm))
+
+  // Eyebrow
+  #place(top + left, dx: 18cm, dy: margin-top,
+    block(width: 14.5cm,
+      text(size: 16pt, fill: dbrx-teal, tracking: 0.15em)[#upper[Join us]]))
+
+  // Headline
+  #place(top + left, dx: 18cm, dy: 2.3cm,
+    block(width: 14.5cm,
+      text(size: 44pt, fill: dbrx-dark-navy)[Data + AI Summit 2026]))
+
+  // Dates / location
+  #place(top + left, dx: 18cm, dy: 6.5cm,
+    block(width: 14.5cm,
+      text(size: 22pt, fill: dbrx-red)[June 15–18 · San Francisco]))
+
+  // Subhead
+  #place(top + left, dx: 18cm, dy: 8.4cm,
+    block(width: 14.5cm,
+      text(size: 16pt, fill: dbrx-dark-teal)[The global data, analytics & AI conference]))
+
+  // Stats row
+  #place(top + left, dx: 18cm, dy: 11.3cm,
+    block(width: 14.5cm)[
+      #grid(
+        columns: (1fr, 1fr, 1fr),
+        align: center + horizon,
+        column-gutter: 0.4cm,
+        [
+          #text(size: 32pt, fill: dbrx-red)[30K+] \
+          #text(size: 13pt, fill: dbrx-charcoal, tracking: 0.08em)[#upper[Attendees]]
+        ],
+        [
+          #text(size: 32pt, fill: dbrx-red)[800+] \
+          #text(size: 13pt, fill: dbrx-charcoal, tracking: 0.08em)[#upper[Sessions]]
+        ],
+        [
+          #text(size: 32pt, fill: dbrx-red)[200+] \
+          #text(size: 13pt, fill: dbrx-charcoal, tracking: 0.08em)[#upper[Sponsors]]
+        ],
+      )
+    ])
+
+  // CTA
+  #place(top + left, dx: 18cm, dy: 16.2cm,
+    block(width: 14.5cm,
+      text(size: 18pt, fill: dbrx-red)[#link("https://www.databricks.com/dataaisummit")[databricks.com/dataaisummit]]))
+]
