@@ -491,55 +491,72 @@
 )
 
 // --- Final slide: Data + AI Summit 2026 CTA ---
+// Branded red background to match the original DAIS-promo style.
 #freeform-slide()[
-  // Hero photo, left half
-  #place(top + left, dx: margin-x, dy: 2.6cm,
-    image("assets/dais-2026-venue.jpg", width: 15.5cm))
+  // Red base with halftone pattern (same as title slide)
+  #place(top + left,
+    rect(width: slide-width, height: slide-height, fill: dbrx-red, stroke: none))
+  #place(top + left,
+    image("assets/bg-red.png", width: slide-width, height: slide-height))
+
+  // White logo bottom-left (red-bg convention from the template)
+  #place(bottom + left, dx: 1.313cm, dy: -0.83cm,
+    image("assets/logo-light.png", width: 3.707cm))
+
+  // Venue photo, right column
+  #place(top + right, dx: -margin-x, dy: 2.6cm,
+    box(stroke: 2pt + white, image("assets/dais-2026-venue.jpg", width: 14.5cm)))
 
   // Eyebrow
-  #place(top + left, dx: 18cm, dy: margin-top,
-    block(width: 14.5cm,
-      text(size: 16pt, fill: dbrx-teal, tracking: 0.15em)[#upper[Join us]]))
+  #place(top + left, dx: margin-x, dy: 2.2cm,
+    block(width: 16cm,
+      text(size: 14pt, fill: white, tracking: 0.2em)[#upper[In-person]]))
 
-  // Headline
-  #place(top + left, dx: 18cm, dy: 2.3cm,
-    block(width: 14.5cm,
-      text(size: 44pt, fill: dbrx-dark-navy)[Data + AI Summit 2026]))
+  // Headline — dates + location stacked
+  #place(top + left, dx: margin-x, dy: 3.3cm,
+    block(width: 16cm)[
+      #set par(leading: 0.2em)
+      #text(size: 56pt, fill: white)[June 15–18] \
+      #text(size: 32pt, fill: white)[San Francisco]
+    ])
 
-  // Dates / location
-  #place(top + left, dx: 18cm, dy: 6.5cm,
-    block(width: 14.5cm,
-      text(size: 22pt, fill: dbrx-red)[June 15–18 · San Francisco]))
+  // Tagline
+  #place(top + left, dx: margin-x, dy: 9.6cm,
+    block(width: 16cm,
+      text(size: 22pt, fill: white)[Data + AI Summit 2026]))
 
   // Subhead
-  #place(top + left, dx: 18cm, dy: 8.4cm,
-    block(width: 14.5cm,
-      text(size: 16pt, fill: dbrx-dark-teal)[The global data, analytics & AI conference]))
+  #place(top + left, dx: margin-x, dy: 11.4cm,
+    block(width: 16cm,
+      text(size: 14pt, fill: white, tracking: 0.06em)[#upper[The global data, analytics & AI conference]]))
 
   // Stats row
-  #place(top + left, dx: 18cm, dy: 11.3cm,
-    block(width: 14.5cm)[
+  #place(top + left, dx: margin-x, dy: 13.6cm,
+    block(width: 16cm)[
       #grid(
         columns: (1fr, 1fr, 1fr),
-        align: center + horizon,
         column-gutter: 0.4cm,
+        align: left + horizon,
         [
-          #text(size: 32pt, fill: dbrx-red)[30K+] \
-          #text(size: 13pt, fill: dbrx-charcoal, tracking: 0.08em)[#upper[Attendees]]
+          #text(size: 38pt, fill: white)[30K+] \
+          #v(-0.3cm)
+          #text(size: 11pt, fill: white, tracking: 0.12em)[#upper[Attendees]]
         ],
         [
-          #text(size: 32pt, fill: dbrx-red)[800+] \
-          #text(size: 13pt, fill: dbrx-charcoal, tracking: 0.08em)[#upper[Sessions]]
+          #text(size: 38pt, fill: white)[800+] \
+          #v(-0.3cm)
+          #text(size: 11pt, fill: white, tracking: 0.12em)[#upper[Sessions]]
         ],
         [
-          #text(size: 32pt, fill: dbrx-red)[200+] \
-          #text(size: 13pt, fill: dbrx-charcoal, tracking: 0.08em)[#upper[Sponsors]]
+          #text(size: 38pt, fill: white)[200+] \
+          #v(-0.3cm)
+          #text(size: 11pt, fill: white, tracking: 0.12em)[#upper[Sponsors]]
         ],
       )
     ])
 
   // CTA
-  #place(top + left, dx: 18cm, dy: 16.2cm,
-    block(width: 14.5cm,
-      text(size: 18pt, fill: dbrx-red)[#link("https://www.databricks.com/dataaisummit")[databricks.com/dataaisummit]]))
+  #place(bottom + left, dx: margin-x, dy: -2.0cm,
+    block(width: 16cm,
+      text(size: 16pt, fill: white)[#link("https://www.databricks.com/dataaisummit")[databricks.com/dataaisummit]]))
 ]
